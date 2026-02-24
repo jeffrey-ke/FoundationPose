@@ -268,3 +268,17 @@ class FoundationPose:
     return (pose@self.get_tf_to_centered_mesh()).data.cpu().numpy().reshape(4,4)
 
 
+def from_mesh(mesh, debug=0, debug_dir='/tmp/fp_debug'):
+  scorer  = ScorePredictor()
+  refiner = PoseRefinePredictor()
+  glctx   = dr.RasterizeCudaContext()
+  return FoundationPose(
+    model_pts=mesh.vertices,
+    model_normals=mesh.vertex_normals,
+    mesh=mesh,
+    scorer=scorer,
+    refiner=refiner,
+    glctx=glctx,
+    debug=debug,
+    debug_dir=debug_dir,
+  )
